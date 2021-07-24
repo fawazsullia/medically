@@ -1,0 +1,21 @@
+.outerContainer {
+  background-color: #37a892;
+}
+
+.container {
+  width: 80%;
+  display: flex;
+  margin: auto;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+}
+
+.navDiv ul {
+  display: flex;
+  list-style-type: none;
+}
+
+.navDiv li {
+  margin-left: 3rem;
+}

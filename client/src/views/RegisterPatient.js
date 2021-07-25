@@ -7,11 +7,8 @@ function Register() {
   //local state to send to the server
   const [name, setname] = useState("");
   const [email, setemail] = useState("");
-  const [affiliatedHospital, setaffiliatedHospital] = useState("");
-  const [uprn, setuprn] = useState("");
-  const [password, setpassword] = useState("");
-  const [confirmpass, setconfirmpass] = useState("")
-  const [message, setmessage] = useState("")
+  const [phone, setphone] = useState("")
+  const [phone, setphone] = useState("")
 
   const handleRegistrationForm = () => {
     const data = {

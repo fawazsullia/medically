@@ -1,0 +1,28 @@
+.container{
+padding: 10px 10px 5px 10px;
+box-shadow: 0 0 4px black;
+margin-bottom: 30px;
+    
+}
+
+.container:hover{
+    cursor: pointer;
+}
+
+.headline{
+    display: flex;
+    justify-content: space-between;
+}
+
+.headline span{
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.container p{
+    font-size: 0.9rem;
+}
+
+.dropDown{
+    transition-duration: 1s;
+}

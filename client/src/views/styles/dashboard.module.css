@@ -1,0 +1,81 @@
+.container{
+    display: flex;
+    width: 90%;
+    margin: auto auto 50px auto;
+    justify-content: space-between;
+    position: relative;
+    overflow-y: hidden;
+    height: 140vh;
+    padding-bottom: 30px;
+    
+}
+
+.left{
+    width: 60%;
+    padding-top: 50px;
+    
+}
+
+.searchDiv{
+    width: 100%;
+    margin: auto auto auto auto;
+    padding-bottom: 50px;
+    position: sticky;
+}
+
+.searchDiv input{
+    width: 70%;
+    height: 30px;
+    outline: none;
+    border: none;
+    box-shadow: 0 4px 6px black;
+    padding-left: 10px;
+    margin-left: 20px;
+}
+
+.searchDiv button{
+    background-color: #37A892;
+    border: none;
+    outline: none;
+    color: white;
+    padding: 9px 20px;
+    margin-left: 20px;
+}
+
+.patientDetailsDiv{
+    margin-left: 20px;
+}
+
+.patientDetailsDiv span{
+    margin-right: 30px;
+}
+
+.patientRecordDiv{
+    width: 100%;
+    margin: 0px auto 0 auto;
+    position: relative;
+    height: 90%;
+    padding: 50px 20px 0 20px;
+    scroll-behavior: smooth;
+    overflow-y: auto;
+
+}
+
+.patientRecordDiv figure{
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translate(-70%, 0);
+}
+
+.patientRecordDiv img{
+    height: 200px;
+    width: 350px;
+    
+    
+}
+
+.right{
+    padding-top: 50px;
+    position: relative;
+}

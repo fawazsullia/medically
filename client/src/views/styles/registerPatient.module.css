@@ -1,0 +1,67 @@
+.container {
+    display: flex;
+  }
+  
+  .left {
+    background-color: #458377;
+    color: white;
+    height: 80vh;
+    width: 35%;
+    padding-left: 3rem;
+    padding-top: 5.5rem;
+  }
+  
+  .left h2 {
+    width: 80%;
+    font-size: 2.3rem;
+    font-weight: 300;
+    margin: 0;
+  }
+  
+  .left p {
+    font-weight: 400;
+    text-decoration: underline;
+  }
+  
+  .right {
+    padding-top: 4.5rem;
+    width: 50%;
+  }
+  
+  .right form {
+    margin-left: 5rem;
+    width: 60%;
+  }
+  
+  .right input {
+    border: none;
+    border-bottom: solid 1px;
+    margin-top: 25px;
+    width: 90%;
+    outline: none;
+    padding-bottom: 5px;
+    font-size: 1.1rem;
+  }
+  
+  .right input::placeholder {
+    font-size: 0.9rem;
+  }
+  
+  .right button {
+    background-color: #37a892;
+    border: none;
+    outline: none;
+    color: white;
+    padding: 10px 20px;
+    margin-top: 10px;
+  }
+  
+  .right button:hover{
+    cursor: pointer;
+    box-shadow: 4px 4px 8px black;
+  }
+  
+  .right p {
+    font-size: 0.8rem;
+  }
+  

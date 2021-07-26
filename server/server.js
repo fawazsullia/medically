@@ -1,20 +1,91 @@
 "use strict";
+//import dependencies
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
+const cors = require("cors");
 require("dotenv").config();
+const session = require("express-session");
+const MongoDBStore = require("connect-mongodb-session")(session);
+const PORT = process.env.PORT || 5000;
 
-const authRoute = require('./routes/authRoutes');
 
-const database_uri = `mongodb+srv://fawazsullia:kenkaneki13@cluster0.v2b1a.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
 
+const database_uri = process.env.URI;
+
+app.set("trust proxy", 1);
 //middlewares
-app.use(express.json())
+app.use(
+  cors({
+    origin: "https://medically.netlify.app",
+    credentials: true,
+  })
+);
+
+
+
+
+//intitialize session storage
+const store = new MongoDBStore({
+  uri: database_uri,
+  collection: "mySessions",
+});
+
+store.on("error", function (error) {
+  console.log(error);
+});
+
+//use express session
+app.use(
+  session({
+    key: "user_sid",
+    secret: process.env.SECRET,
+    name: "ideaproject",
+    resave: false,
+    saveUninitialized: false,
+    store: store,
+    cookie: {
+      secure: true,
+      maxAge: 604800000,
+      sameSite: "none",
+    },
+  })
+);
+
+app.use(express.json());
+
+
+//router to check if session exists
+app.get("/get-user", (req, res) => {
+  if (req.session.cookie && req.session.drName) {
+    res
+      .status(200)
+      .json({
+        signedIn: true,
+        drName: req.session.drName,
+        uprn: req.session.uprn,
+      })
+      .end();
+  } else {
+    res.status(401).json({ signedIn: false, drName: "", uprn: "" }).end();
+  }
+});
+
+
+//import routes
+const authRoute = require("./routes/authRoutes");
+const patientRoutes = require("./routes/patientRoutes");
 
 //route middlewares
-app.use('/auth', authRoute);
-
+app.use("/auth", authRoute);
+app.use("/patient", patientRoutes);
 
 //database and sever
-mongoose.connect(database_uri, {useNewUrlParser: true, useUnifiedTopology: true}, ()=> { console.log(" database connected")})
-app.listen(5000, console.log("listening on 5000"));
+mongoose.connect(
+  database_uri,
+  { useNewUrlParser: true, useUnifiedTopology: true },
+  () => {
+    console.log(" database connected");
+  }
+);
+app.listen(PORT, console.log("listening on 5000"));

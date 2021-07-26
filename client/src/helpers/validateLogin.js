@@ -5,7 +5,7 @@ export const validateLogin = function (data) {
     const validEmail = data.drEmail.match(regex)
 
     if(validEmail){
-        return true
+        return { status :true }
     }
     else { return {status : false, message: "Enter a valid email"} }
   } else {

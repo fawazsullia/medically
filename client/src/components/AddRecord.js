@@ -4,7 +4,7 @@ import "react-markdown-editor-lite/lib/index.css";
 import * as addRecordStyle from "./styles/addRecord.module.css";
 import ReactMarkdown from "react-markdown";
 
-function AddRecord({ createRecord }) {
+function AddRecord({ createRecord, loading }) {
   const [brief, setbrief] = useState("");
   const [description, setdescription] = useState("");
 
@@ -47,7 +47,11 @@ function AddRecord({ createRecord }) {
         onChange={handleEditorChange}
         value={description}
       />
-      <button onClick={handleCreateRecord}>Create</button>
+      { loading ? (<button type='button' onClick={handleCreateRecord}>
+            Creating...
+          </button>) : (<button type='button' onClick={handleCreateRecord}>
+            Create
+          </button>) }
     </div>
   );
 }

@@ -15,7 +15,7 @@ const regex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/ig
 if(data.password.length >= 8){
   
 if(data.password === confirm_password){
-    return true
+    return {status :true }
 }
 else {
     return { status : false, message: "Passwords don't match"  }

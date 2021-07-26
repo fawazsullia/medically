@@ -1,5 +1,6 @@
 import React from "react";
 import * as homeStyle from "./styles/home.module.css";
+import { Link } from "react-router-dom";
 
 function Home() {
   return (
@@ -7,7 +8,9 @@ function Home() {
       <div className={homeStyle.container}>
         <div className={homeStyle.left}>
           <h1>Your patient’s complete medical history in one place</h1>
-          <button>Get Access</button>
+          <Link to='/register'>
+            <button>Get Access</button>
+          </Link>
         </div>
 
         <div className={homeStyle.right}>

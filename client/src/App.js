@@ -1,45 +1,78 @@
 import "./App.css";
-import React, {useState} from "react";
-import { Route, Switch } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Route, Switch, Redirect } from "react-router-dom";
 import Nav from "./components/Nav";
 import Home from "./views/Home";
 import Register from "./views/Register";
 import Login from "./views/Login";
 import Dashboard from "./views/Dashboard";
-import RegisterPatient from "./views/RegisterPatient"
+import RegisterPatient from "./views/RegisterPatient";
+import LoadingSpinner from "./components/LoadingSpinner";
 
 function App() {
+  const [user, setuser] = useState({ signedIn: false, drName: "", uprn: "" });
+  const [loading, setloading] = useState(true);
 
-  const [user, setuser] = useState({ signedIn : true, drName : "Fawaz Sullia", uprn : "123658"  })
+  useEffect(() => {
+    fetch("https://medically-app.herokuapp.com/get-user", { credentials: "include" })
+      .then((response) => response.json())
+      .then((user) => {
+        setuser(user);
+        setloading(false);
+      })
+      .catch((error) => { setloading(false);    })
+  }, []);
 
-  return (
-    <div className='App'>
-      <Nav user={user} />
+  const logout = () => {
 
-      <Switch>
-        <Route exact path='/'>
-          <Home />
-        </Route>
+    fetch(`https://medically-app.herokuapp.com/auth/logout`, { credentials: "include" })
+    .then((response) =>  {setuser({ signedIn: false, drName: "", uprn: "" } ); window.location ="https://medically.netlify.app/login" })
+    .catch((err) => { alert("Error Signing out")})
+  }
 
-        <Route path='/register'>
-          <Register />
-        </Route>
+  const loginUser = (userDetails) => {
+    setuser(userDetails);
+  };
 
-    <Route path='/login'>
-        <Login />
-    </Route>
+  if (loading) {
+    return <LoadingSpinner />;
+  } else {
+    return (
+      <div className='App'>
+        <Nav user={user} logout={logout} />
 
-    <Route path='/dashboard'>
-        <Dashboard user={user} />
-    </Route>
+        <Switch>
+          <Route exact path='/'>
+            <Home />
+          </Route>
 
-    <Route path='/register-patient'>
-        <RegisterPatient user={user} />
-    </Route>
+          <Route path='/register'>
+            {user.signedIn ? <Redirect to='/dashboard' /> : <Register />}
+          </Route>
 
-      </Switch>
-    </div>
-  );
+          <Route path='/login'>
+            {user.signedIn ? (
+              <Redirect to='/dashboard' />
+            ) : (
+              <Login loginUser={loginUser} user={user} />
+            )}
+          </Route>
+
+          <Route path='/dashboard'>
+            {user.signedIn ? (
+              <Dashboard user={user} />
+            ) : (
+              <Redirect to='/login' />
+            )}
+          </Route>
+
+          <Route path='/register-patient'>
+            <RegisterPatient user={user} />
+          </Route>
+        </Switch>
+      </div>
+    );
+  }
 }
 
 export default App;

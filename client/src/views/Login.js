@@ -3,12 +3,14 @@ import { Link } from "react-router-dom";
 import * as loginStyle from "./styles/login.module.css";
 import { validateLogin } from "../helpers/validateLogin";
 
-function Login() {
+function Login({loginUser, user}) {
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
   const [message, setmessage] = useState("");
+  const [loading, setloading] = useState(false)
 
   const handleLogin = (event) => {
+    
     const data = {
       drEmail: email,
       password: password,
@@ -16,8 +18,36 @@ function Login() {
 
     const isValid = validateLogin(data);
     setmessage(isValid.message);
-
 //fetch post to server to validate credentials
+if(isValid.status){
+  setloading(true)
+fetch('https://medically-app.herokuapp.com/auth/login', {
+method: 'POST',
+mode: 'cors',
+headers: {
+  'Content-Type' : 'application/json'
+},
+credentials: 'include',
+body : JSON.stringify(data)
+
+})
+.then((res)=> res.json())
+.then((response)=>{
+  setloading(false)
+  if(response.status){
+    loginUser(response.userDetails)
+
+  }
+  else{  setmessage(response.message)    }
+
+
+})
+.catch((error)=>{setloading(false); setmessage("Something went wrong!")})
+
+}
+else{
+  setmessage(isValid.message)
+}
 //if valid user, redirect to dash
 //if no account, redirect to signup
 //if valid user but wrong password, error
@@ -53,9 +83,12 @@ function Login() {
             }}
             value={password}
           />{" "}
-          <button type='button' onClick={handleLogin}>
+          { loading ? (<button type='button' onClick={handleLogin}>
+            Loading
+          </button>) : (<button type='button' onClick={handleLogin}>
             Login
-          </button>
+          </button>) }
+            
           <span
             style={{ color: "red", fontSize: "0.7rem", marginLeft: "20px" }}
           >

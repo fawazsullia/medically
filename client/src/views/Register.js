@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import * as registerStyle from "./styles/register.module.css";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { validateRegistration } from "../helpers/validateRegistration";
 
 function Register() {
@@ -12,6 +12,7 @@ function Register() {
   const [password, setpassword] = useState("");
   const [confirmpass, setconfirmpass] = useState("")
   const [message, setmessage] = useState("")
+  const [loading, setloading] = useState(false)
 
   const handleRegistrationForm = () => {
     const data = {
@@ -23,10 +24,32 @@ function Register() {
     };
     const formValid = validateRegistration(data, confirmpass)
     setmessage(formValid.message)
-
+if(formValid.status){
+  setloading(true)
     //fetch and post data to server
-    //on data received, redirect to login page
-    //on data not received, redirect to register page with an error message
+    fetch('https://medically-app.herokuapp.com/auth/register', {
+      method: 'POST',
+      mode: 'cors',
+      headers : {
+        'Content-Type' : 'application/json'
+      },
+      body: JSON.stringify(data)
+
+    })
+    .then((res)=> res.json() )
+  .then( (response) => { 
+    setloading(false)
+    if(response.status){
+      setmessage(response.message);
+      window.location = "https://medically.netlify.app/login";
+    }
+    else {  setmessage(response.message);  }
+
+   }) 
+   .catch((err)=>{console.log(err); setloading(false); setmessage("Something went wrong. Please try again.");})
+  }
+    else {  return  }
+   
     //implement loader in button for waiting
     
   };
@@ -92,9 +115,12 @@ function Register() {
               setconfirmpass(e.target.value);
             }}
             value={confirmpass} /> <br />
-          <button type='button' onClick={handleRegistrationForm}>
+          
+          { loading ? (<button type='button' onClick={handleRegistrationForm}>
+            Registering...
+          </button>) : (<button type='button' onClick={handleRegistrationForm}>
             Register
-          </button>
+          </button>) }
           <span style={{color: "red", fontSize: "0.7rem", marginLeft: "20px"}}>{message}</span>
           <p>
             Have an account? <Link to='/login'>Login</Link>

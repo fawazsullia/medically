@@ -6,7 +6,7 @@ if(data.patientName !== "" && data.patientEmail !== "" && data.patientPhone !== 
 if(matching){
 
 if(data.patientPhone.length === 10){
-    return true
+    return {status : true}
 }
 else { return {status : false, message: "Enter a valid phone number"}  }
 

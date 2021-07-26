@@ -10,6 +10,8 @@ function RegisterPatient({user}) {
   const [phone, setphone] = useState("")
   const [bloodGroup, setbloodGroup] = useState("")
   const [message, setmessage] = useState("")
+  const [loading, setloading] = useState(false)
+
 
   const handleRegistrationForm = () => {
     const data = {
@@ -18,10 +20,39 @@ function RegisterPatient({user}) {
       patientPhone: phone,
       bloodGroup: bloodGroup,
       uprn : user.uprn,
+     
     };
     //validate the data
 const formValid = validatePatientRegistration(data)
 setmessage(formValid.message)
+
+if(formValid.status){
+setloading(true)
+fetch('https://medically-app.herokuapp.com/patient/register-patient',{
+
+method: 'POST',
+headers: { 'Content-Type' : 'application/json'  },
+mode : 'cors',
+body : JSON.stringify(data)
+})
+.then((res)=> res.json())
+.then((response)=>{  
+setloading(false)
+  //if success, I want the id and a message called user created
+  //if not, error message
+if(response.status){   
+
+  setmessage(response.message)
+  //I awnt to do something to display the id created for the patient
+
+}
+else {  setmessage(response.message)   }
+
+})
+.catch( (error) => {setmessage("Something went wrong"); setloading(false);})
+
+}
+else {  return }
     //fetch and post data to server
     //receive the created patientId
     //on data not received, redirect to register page with an error message
@@ -76,9 +107,11 @@ setmessage(formValid.message)
             value={bloodGroup}
           />{" "}
           <br />
-          <button type='button' onClick={handleRegistrationForm}>
+          
+          { loading ? (<button type='button' onClick={handleRegistrationForm}>
+Registering          </button>) : (<button type='button' onClick={handleRegistrationForm}>
             Register
-          </button>
+          </button>) }
           <span style={{color: "red", fontSize: "0.7rem", marginLeft: "20px"}}>{message}</span>
          
         </form>

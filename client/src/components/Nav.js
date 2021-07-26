@@ -11,11 +11,16 @@ color: "inherit",
 
 
 
-function Nav({user}) {
+function Nav({user, logout}) {
 
   let location = useLocation();
+
+  const handleLogout =() => {
+
+logout()
+
+  }
   
-console.log(location)
   return (
     <div className={navStyle.outerContainer}>
       <div className={navStyle.container}>
@@ -29,7 +34,7 @@ console.log(location)
             {!user.signedIn && <li><Link style={linkStyle} to="/register">Register</Link></li>}
             { ( user.signedIn && location.pathname !== "/dashboard" ) && <li><Link style={linkStyle} to="/dashboard">Dashboard</Link></li>}
             { ( user.signedIn && location.pathname === "/dashboard" ) && <li><Link style={linkStyle} to="/register-patient">Register Patient</Link></li>}
-            { ( user.signedIn && location.pathname === "/dashboard" ) && <li><Link style={linkStyle} to="/dashboard">Logout</Link></li>}
+            { ( user.signedIn && location.pathname === "/dashboard" ) && <li><button onClick={handleLogout}>Logout</button></li>}
           </ul>
         </div>
       </div>

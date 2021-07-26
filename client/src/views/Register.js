@@ -15,8 +15,8 @@ function Register() {
 
   const handleRegistrationForm = () => {
     const data = {
-      name: name,
-      email: email,
+      drName: name,
+      drEmail: email,
       affiliated_hospital: affiliatedHospital,
       uprn: uprn,
       password: password,

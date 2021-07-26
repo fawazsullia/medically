@@ -1,28 +1,29 @@
 import React, { useState } from "react";
 import * as registerStyle from "./styles/registerPatient.module.css";
 import { Link } from "react-router-dom";
-import { validateRegistration } from "../helpers/validateRegistration";
+import { validatePatientRegistration } from "../helpers/validatepatientRegistration";
 
-function Register() {
+function RegisterPatient({user}) {
   //local state to send to the server
   const [name, setname] = useState("");
   const [email, setemail] = useState("");
   const [phone, setphone] = useState("")
-  const [phone, setphone] = useState("")
+  const [bloodGroup, setbloodGroup] = useState("")
+  const [message, setmessage] = useState("")
 
   const handleRegistrationForm = () => {
     const data = {
-      name: name,
-      email: email,
-      affiliated_hospital: affiliatedHospital,
-      uprn: uprn,
-      password: password,
+      patientName: name,
+      patientEmail: email,
+      patientPhone: phone,
+      bloodGroup: bloodGroup,
+      uprn : user.uprn,
     };
-    const formValid = validateRegistration(data, confirmpass)
-    setmessage(formValid.message)
-
+    //validate the data
+const formValid = validatePatientRegistration(data)
+setmessage(formValid.message)
     //fetch and post data to server
-    //on data received, redirect to login page
+    //receive the created patientId
     //on data not received, redirect to register page with an error message
     //implement loader in button for waiting
     
@@ -32,10 +33,9 @@ function Register() {
     <div className={registerStyle.container}>
       <div className={registerStyle.left}>
         <h2>
-          Understanding your patients’ medical history lets you help them
-          better.
+        Patient doesn’t<br/> have an id and wants to create one?
         </h2>
-        <p>Register to get access</p>
+        <p>Create one here!</p>
       </div>
 
       <div className={registerStyle.right}>
@@ -60,46 +60,31 @@ function Register() {
           <br />
           <input
             type='text'
-            placeholder='Affiliated Hospital'
+            placeholder='Phone'
             onChange={(e) => {
-              setaffiliatedHospital(e.target.value);
+              setphone(e.target.value);
             }}
-            value={affiliatedHospital}
+            value={phone}
           />{" "}
           <br />
           <input
             type='text'
-            placeholder='UPRN'
+            placeholder='Blood Group'
             onChange={(e) => {
-              setuprn(e.target.value);
+              setbloodGroup(e.target.value);
             }}
-            value={uprn}
+            value={bloodGroup}
           />{" "}
           <br />
-          <input
-            type='password'
-            placeholder='Password'
-            onChange={(e) => {
-              setpassword(e.target.value);
-            }}
-            value={password}
-          />{" "}
-          <br />
-          <input type='password' placeholder='Confirm Password' onChange={(e) => {
-              setconfirmpass(e.target.value);
-            }}
-            value={confirmpass} /> <br />
           <button type='button' onClick={handleRegistrationForm}>
             Register
           </button>
           <span style={{color: "red", fontSize: "0.7rem", marginLeft: "20px"}}>{message}</span>
-          <p>
-            Have an account? <Link to='/login'>Login</Link>
-          </p>
+         
         </form>
       </div>
     </div>
   );
 }
 
-export default Register;
+export default RegisterPatient;

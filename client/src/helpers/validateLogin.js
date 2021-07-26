@@ -1,8 +1,8 @@
 export const validateLogin = function (data) {
-  if (data.name !== "" && data.password !== "") {
+  if (data.drEmail !== "" && data.password !== "") {
 
     const regex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/ig
-    const validEmail = data.email.match(regex)
+    const validEmail = data.drEmail.match(regex)
 
     if(validEmail){
         return true

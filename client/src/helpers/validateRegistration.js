@@ -1,14 +1,14 @@
 export const validateRegistration = function (data, confirm_password) {
   if (
-    data.name !== "" &&
-    data.email !== "" &&
+    data.drName !== "" &&
+    data.drEmail !== "" &&
     data.affiliated_hospital !== "" &&
     data.password !== "" &&
     data.confirm_password !== ""
   ) {
 
 const regex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/ig
- const matching = data.email.match(regex)
+ const matching = data.drEmail.match(regex)
 
  if(matching){ 
 

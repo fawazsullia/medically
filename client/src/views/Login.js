@@ -10,7 +10,7 @@ function Login() {
 
   const handleLogin = (event) => {
     const data = {
-      email: email,
+      drEmail: email,
       password: password,
     };
 

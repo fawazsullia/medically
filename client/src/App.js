@@ -34,7 +34,7 @@ function App() {
     </Route>
 
     <Route path='/register-patient'>
-        <RegisterPatient />
+        <RegisterPatient user={user} />
     </Route>
 
       </Switch>

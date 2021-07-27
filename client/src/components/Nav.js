@@ -34,7 +34,7 @@ logout()
             {!user.signedIn && <li><Link style={linkStyle} to="/register">Register</Link></li>}
             { ( user.signedIn && location.pathname !== "/dashboard" ) && <li><Link style={linkStyle} to="/dashboard">Dashboard</Link></li>}
             { ( user.signedIn && location.pathname === "/dashboard" ) && <li><Link style={linkStyle} to="/register-patient">Register Patient</Link></li>}
-            { ( user.signedIn && location.pathname === "/dashboard" ) && <li><button onClick={handleLogout}>Logout</button></li>}
+            { ( user.signedIn && location.pathname === "/dashboard" ) && <li><button onClick={handleLogout} className={navStyle.logoutbtn}>Logout</button></li>}
           </ul>
         </div>
       </div>

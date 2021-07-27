@@ -19,3 +19,15 @@
 .navDiv li {
   margin-left: 3rem;
 }
+
+.logoutbtn{
+  border: none;
+  outline: none;
+  background-color:transparent;
+  color: white;
+font-size: 1rem;}
+
+.logoutbtn:hover{
+  cursor: pointer;
+  box-shadow: 0 0 4px black;
+}

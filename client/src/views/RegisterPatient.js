@@ -12,6 +12,7 @@ function RegisterPatient({user}) {
   const [message, setmessage] = useState("")
   const [loading, setloading] = useState(false)
 
+  
 
   const handleRegistrationForm = () => {
     const data = {
@@ -43,8 +44,11 @@ setloading(false)
 if(response.status){   
 
   setmessage(response.message)
-  //I awnt to do something to display the id created for the patient
-
+  alert("Patient account has been created. An email containing the id has been sent to the patient email address.")
+setname("")
+setemail("")
+setphone("")
+setbloodGroup("")
 }
 else {  setmessage(response.message)   }
 
@@ -98,14 +102,25 @@ else {  return }
             value={phone}
           />{" "}
           <br />
-          <input
+          {/* <input
             type='text'
             placeholder='Blood Group'
             onChange={(e) => {
               setbloodGroup(e.target.value);
             }}
             value={bloodGroup}
-          />{" "}
+          />{" "} */}
+          <label>Blood Group:</label>
+          <select onChange={(e)=>setbloodGroup(e.target.value)}>
+            <option value="A+">A+</option>
+            <option value="B+">B+</option>
+            <option value="AB+">AB+</option>
+            <option value="O+">O+</option>
+            <option value="A-">A-</option>
+            <option value="B-">B-</option>
+            <option value="AB-">AB-</option>
+            <option value="O-">O-</option>
+          </select>
           <br />
           
           { loading ? (<button type='button' onClick={handleRegistrationForm}>

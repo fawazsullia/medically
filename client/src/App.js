@@ -26,7 +26,7 @@ function App() {
   const logout = () => {
 
     fetch(`https://medically-app.herokuapp.com/auth/logout`, { credentials: "include" })
-    .then((response) =>  {setuser({ signedIn: false, drName: "", uprn: "" } ); window.location ="https://medically.netlify.app/login" })
+    .then((response) =>  {setuser({ signedIn: false, drName: "", uprn: "" } ); })
     .catch((err) => { alert("Error Signing out")})
   }
 

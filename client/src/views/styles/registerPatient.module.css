@@ -64,4 +64,25 @@
   .right p {
     font-size: 0.8rem;
   }
+
+  .right label{
+
+font-size: 0.8rem;
+margin-right: 25px;
+
+
+  }
+
+  .right select{
+    outline: none;
+    padding: 5px 10px 5px 10px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    border: none;
+    box-shadow: 0 0 4px black;
+  }
+
+  .right select:hover{
+    cursor: pointer;
+  }
   

@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const PatientDetails = require('../models/patientSchema')
+const sendEmail = require('../sendEmail')
 const { nanoid } = require('nanoid')
 
 //creating a new patient here
@@ -24,6 +25,7 @@ const newPatient = new PatientDetails({
 })
 
 await newPatient.save()
+await sendEmail(patientEmail, id)
 await res.status(200).json({ status : true, message : "Patient registered", id : id }).end()
 
 }

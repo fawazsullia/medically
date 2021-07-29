@@ -1,13 +1,14 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
-import Nav from "./components/Nav";
-import Home from "./views/Home";
-import Register from "./views/Register";
-import Login from "./views/Login";
-import Dashboard from "./views/Dashboard";
-import RegisterPatient from "./views/RegisterPatient";
 import LoadingSpinner from "./components/LoadingSpinner";
+
+const Nav = React.lazy(() => import('./components/Nav'));
+const Home = React.lazy(() => import('./views/Home'));
+const Register = React.lazy(() => import('./views/Register'));
+const Login = React.lazy(() => import('./views/Login'));
+const Dashboard = React.lazy(() => import('./views/Dashboard'));
+const RegisterPatient = React.lazy(() => import('./views/RegisterPatient'));
 
 function App() {
   const [user, setuser] = useState({ signedIn: false, drName: "", uprn: "" });

@@ -30,7 +30,7 @@ logout()
 
         <div className={navStyle.navDiv}>
           <ul>
-          { !user.signedIn && <li><a style={linkStyle} href="https://cookie-diagnostic-4cf.notion.site/How-to-use-Medically-App-e373d72957774e928011a14d172a5fdc" target="_blank" >How to use this app</a></li>}
+          { <li><a style={linkStyle} href="https://cookie-diagnostic-4cf.notion.site/How-to-use-Medically-App-e373d72957774e928011a14d172a5fdc" target="_blank" >How to use this app</a></li>}
             { !user.signedIn && <li><Link style={linkStyle} to="/login">Login</Link></li>}
             
             {!user.signedIn && <li><Link style={linkStyle} to="/register">Register</Link></li>}

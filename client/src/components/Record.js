@@ -22,7 +22,7 @@ show ? setshow(false) : setshow(true)
         <div className={recordStyle.container} onClick={showDetails}>
         <div className={recordStyle.headline}>
         <span>Dr. {record.drName}</span>    
-        <span>{record.date}</span>
+        <span>{record.created_date}</span>
         </div>
         <p>{record.brief}</p>
         <div style={{ height : show ? "auto" : "0px", display: show ? "block" : "none"   }} className={recordStyle.dropDown} >

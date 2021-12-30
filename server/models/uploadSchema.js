@@ -9,7 +9,8 @@ const uploadFileSchema = new mongoose.Schema({
 
     const uploadSchema = new mongoose.Schema({
 
-        patientId : [uploadFileSchema]
+        patientId : patientId,
+        uploads : [uploadFileSchema]
 
     })
 

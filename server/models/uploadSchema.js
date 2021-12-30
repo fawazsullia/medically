@@ -9,11 +9,11 @@ const uploadFileSchema = new mongoose.Schema({
 
     const uploadSchema = new mongoose.Schema({
 
-        patientId : patientId,
+        patientId : String,
         uploads : [uploadFileSchema]
 
     })
 
     const Uploads = mongoose.model('Uploads', uploadSchema)
 
-    module.export = Uploads;
+    module.exports = Uploads;

@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 
+
+//schema for records
 const recordSchema = new mongoose.Schema({
 
 drName: String,
@@ -10,6 +12,9 @@ created_date : String
 
 
 })
+
+//schema for uploads
+
 
 const patientSchema = new mongoose.Schema({
     patientId : String,
@@ -30,7 +35,7 @@ const patientSchema = new mongoose.Schema({
     required: true
   },
   bloodGroup: { type :String, required : true },
-  records : [recordSchema]
+  records : [recordSchema],
 });
 
 const PatientDetails = mongoose.model("PatientDetails", patientSchema);

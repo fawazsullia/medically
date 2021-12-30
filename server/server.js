@@ -7,50 +7,56 @@ const cors = require("cors");
 require("dotenv").config();
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
-const PORT = process.env.PORT || 5000;
+const serverConfig = require('./serverConfig')
 
 
+//different configuration based on environments
+if(serverConfig.environment === "production"){
 
-const database_uri = process.env.URI;
+  app.set("trust proxy", 1);
+  //middlewares
+  app.use(
+    cors({
+      origin: "https://medically.netlify.app",
+      credentials: true,
+    })
+  );
+  
+  // intitialize session storage
+  const store = new MongoDBStore({
+    uri: database_uri,
+    collection: "mySessions",
+  });
+  
+  store.on("error", function (error) {
+    console.log(error);
+  });
+  
+  // use express session
+  app.use(
+    session({
+      key: "user_sid",
+      secret: serverConfig.secret,
+      name: "ideaproject",
+      resave: false,
+      saveUninitialized: false,
+      store: store,
+      cookie: {
+        secure: true,
+        maxAge: 604800000,
+        sameSite: "none",
+      },
+    })
+  );
+  
 
-app.set("trust proxy", 1);
-//middlewares
-app.use(
-  cors({
-    origin: "https://medically.netlify.app",
-    credentials: true,
-  })
-);
+}
+else {
 
+app.use(cors())
 
+}
 
-
-//intitialize session storage
-const store = new MongoDBStore({
-  uri: database_uri,
-  collection: "mySessions",
-});
-
-store.on("error", function (error) {
-  console.log(error);
-});
-
-//use express session
-app.use(
-  session({
-    key: "user_sid",
-    secret: process.env.SECRET,
-    name: "ideaproject",
-    resave: false,
-    saveUninitialized: false,
-    store: store,
-    cookie: {
-      secure: true,
-      maxAge: 604800000,
-      sameSite: "none",
-    },
-  })
-);
 
 app.use(express.json());
 
@@ -75,17 +81,19 @@ app.get("/get-user", (req, res) => {
 //import routes
 const authRoute = require("./routes/authRoutes");
 const patientRoutes = require("./routes/patientRoutes");
+const fileRoutes = require('./routes/fileRoutes');
 
 //route middlewares
 app.use("/auth", authRoute);
 app.use("/patient", patientRoutes);
+app.use("/file", fileRoutes);
 
 //database and sever
 mongoose.connect(
-  database_uri,
+  serverConfig.uri,
   { useNewUrlParser: true, useUnifiedTopology: true },
   () => {
     console.log(" database connected");
   }
 );
-app.listen(PORT, console.log("listening on 5000"));
+app.listen(serverConfig.port, console.log("listening on 5000"));

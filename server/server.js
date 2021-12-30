@@ -77,6 +77,11 @@ app.get("/get-user", (req, res) => {
   }
 });
 
+//ping route to check if server is alive
+app.get('/ping', (req, res)=>{
+  res.send("Pingggg!!!!")
+})
+
 
 //import routes
 const authRoute = require("./routes/authRoutes");

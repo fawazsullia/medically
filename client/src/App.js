@@ -2,6 +2,7 @@ import "./App.css";
 import React, { useState, useEffect } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import LoadingSpinner from "./components/LoadingSpinner";
+import appConfig from "./appConfig";
 
 const Nav = React.lazy(() => import('./components/Nav'));
 const Home = React.lazy(() => import('./views/Home'));
@@ -15,7 +16,7 @@ function App() {
   const [loading, setloading] = useState(true);
 
   useEffect(() => {
-    fetch("https://medically-app.herokuapp.com/get-user", { credentials: "include" })
+    fetch(`${appConfig.baseUrl}/get-user`, { credentials: appConfig.credentials })
       .then((response) => response.json())
       .then((user) => {
         setuser(user);
@@ -26,7 +27,7 @@ function App() {
 
   const logout = () => {
 
-    fetch(`https://medically-app.herokuapp.com/auth/logout`, { credentials: "include" })
+    fetch(`${appConfig.baseUrl}/auth/logout`, { credentials: appConfig.credentials })
     .then((response) =>  {setuser({ signedIn: false, drName: "", uprn: "" } ); })
     .catch((err) => { alert("Error Signing out")})
   }

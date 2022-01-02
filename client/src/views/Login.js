@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import * as loginStyle from "./styles/login.module.css";
 import { validateLogin } from "../helpers/validateLogin";
+import appConfig from "../appConfig";
 
 function Login({loginUser, user}) {
   const [email, setemail] = useState("");
@@ -21,13 +22,13 @@ function Login({loginUser, user}) {
 //fetch post to server to validate credentials
 if(isValid.status){
   setloading(true)
-fetch('https://medically-app.herokuapp.com/auth/login', {
+fetch(`${appConfig.baseUrl}/auth/login`, {
 method: 'POST',
 mode: 'cors',
 headers: {
   'Content-Type' : 'application/json'
 },
-credentials: 'include',
+credentials: appConfig.credentials,
 body : JSON.stringify(data)
 
 })

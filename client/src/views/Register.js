@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import * as registerStyle from "./styles/register.module.css";
 import { Link, Redirect } from "react-router-dom";
 import { validateRegistration } from "../helpers/validateRegistration";
+import appConfig from "../appConfig";
 
 function Register() {
   //local state to send to the server
@@ -27,7 +28,7 @@ function Register() {
 if(formValid.status){
   setloading(true)
     //fetch and post data to server
-    fetch('https://medically-app.herokuapp.com/auth/register', {
+    fetch(`${appConfig.baseUrl}/auth/register`, {
       method: 'POST',
       mode: 'cors',
       headers : {

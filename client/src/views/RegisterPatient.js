@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import * as registerStyle from "./styles/registerPatient.module.css";
 import { Link } from "react-router-dom";
 import { validatePatientRegistration } from "../helpers/validatepatientRegistration";
+import appConfig from "../appConfig";
 
 function RegisterPatient({user}) {
   //local state to send to the server
@@ -29,7 +30,7 @@ setmessage(formValid.message)
 
 if(formValid.status){
 setloading(true)
-fetch('https://medically-app.herokuapp.com/patient/register-patient',{
+fetch(`${appConfig.baseUrl}/patient/register-patient`,{
 
 method: 'POST',
 headers: { 'Content-Type' : 'application/json'  },
@@ -44,7 +45,7 @@ setloading(false)
 if(response.status){   
 
   setmessage(response.message)
-  alert("Patient account has been created. An email containing the id has been sent to the patient email address.")
+  alert("Patient Id is " + response.id + ". An email containing the same will be sent shortly")
 setname("")
 setemail("")
 setphone("")

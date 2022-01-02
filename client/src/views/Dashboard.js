@@ -2,6 +2,7 @@ import React,{useState} from "react";
 import AddRecord from "../components/AddRecord";
 import Record from "../components/Record";
 import * as dashboardStyle from "./styles/dashboard.module.css";
+import appConfig from "../appConfig";
 
 function Dashboard({user}) {
 
@@ -19,7 +20,7 @@ const searchPatient = () => {
   if(patientId){
 setloading(true)
 //use this to get all the details related to patient from the server using id provided
-fetch('https://medically-app.herokuapp.com/patient/search-patient', {
+fetch(`${appConfig.baseUrl}/patient/search-patient`, {
 method : 'POST',
 headers : {'Content-Type' : 'application/json'},
 mode : 'cors',
@@ -64,7 +65,7 @@ const createRecord = (brief, description) => {
       setloading(true)
       setrecords([ { drName : user.drName, uprn : user.uprn, brief : brief, description : description, date: reqDate  } , ...records ])
 
-    fetch('https://medically-app.herokuapp.com/patient/create-record', {
+    fetch(`${appConfig.baseUrl}/patient/create-record`, {
 method : 'POST',
 headers : {'Content-Type' : 'application/json'},
 mode : 'cors',
@@ -106,7 +107,7 @@ else {  alert("Search for a patient to create record"); setloading(false);   }
               Nothing here. Try searching
             </figcaption>
           </figure> }
-         { records.map((record)=> { return <Record record={record} /> })}
+         { records.map((record)=> { return <Record record={record} key={record.brief} /> })}
         </div>
       </div>
 

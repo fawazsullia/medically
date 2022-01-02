@@ -63,7 +63,7 @@ app.use(express.json());
 
 //router to check if session exists
 app.get("/get-user", (req, res) => {
-  if (req.session.cookie && req.session.drName) {
+  if (req.session && req.session.cookie && req.session.drName) {
     res
       .status(200)
       .json({

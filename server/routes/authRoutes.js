@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const DoctorUser = require("../models/doctorUserSchema");
+const serverConfig = require('../serverConfig')
 
 const saltRounds = 10;
 
@@ -45,10 +46,12 @@ router.post("/login", async (req, res) => {
 
   if (userExists.length > 0) {
     const match = await bcrypt.compare(password, userExists[0].hashed_password);
-
     if (match) {
-      req.session.drName = userExists[0].drName;
-      req.session.uprn = userExists[0].uprn;
+      if(serverConfig.environment === "production"){
+        req.session.drName = userExists[0].drName;
+        req.session.uprn = userExists[0].uprn;
+      }
+     
       await res
         .status(200)
         .json({

@@ -28,7 +28,7 @@ mode: 'cors',
 headers: {
   'Content-Type' : 'application/json'
 },
-credentials: appConfig.credentials,
+credentials: 'include',
 body : JSON.stringify(data)
 
 })
@@ -43,7 +43,7 @@ body : JSON.stringify(data)
 
 
 })
-.catch((error)=>{setloading(false); setmessage("Something went wrong!")})
+.catch((error)=>{setloading(false); setmessage("Something went wrong!"); console.log(error)})
 
 }
 else{

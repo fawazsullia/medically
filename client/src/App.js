@@ -15,8 +15,10 @@ function App() {
   const [user, setuser] = useState({ signedIn: false, drName: "", uprn: "" });
   const [loading, setloading] = useState(true);
 
+console.log(appConfig)
+
   useEffect(() => {
-    fetch(`${appConfig.baseUrl}/get-user`, { credentials: appConfig.credentials })
+    fetch(`${appConfig.baseUrl}/get-user`, { credentials: 'include'})
       .then((response) => response.json())
       .then((user) => {
         setuser(user);

@@ -24,7 +24,7 @@ if(serverConfig.environment === "production"){
   
   // intitialize session storage
   const store = new MongoDBStore({
-    uri: database_uri,
+    uri: serverConfig.uri,
     collection: "mySessions",
   });
   

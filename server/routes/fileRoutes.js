@@ -8,23 +8,25 @@ const fs = require('fs').promises
 
 
 
+//* upload file route
+router.post('/upload/:fileName', async (req, res)=>{
 
-router.post('/upload', async (req, res)=>{
-
-const { fileName } = req.body;
+    const fileName = req.params.fileName
 const dirName = path.dirname(__dirname);
 const reqPath = path.join(dirName, '\\uploads\\', fileName )
 
 req.on("data", async (chunk)=>{
 
-await fs.appendFile(fileName, chunk.file)
+await fs.appendFile(reqPath, chunk)
 
 })
-res.status(200).json({message : "Chunk received"}).end()
+res.status(200).json({uploadFileName : fileName }).end()
 
 
 
 })
+
+//* data associated with the upload
 
 router.post('/data', async (req, res)=>{
 
@@ -42,7 +44,6 @@ router.post('/data', async (req, res)=>{
 
     try{
         const patient = await Uploads.find({patientId : patientId})
-        console.log(patient)
         if(patient.length){
             //add to the uploads array
             await Uploads.findOneAndUpdate({patientId : patientId}, {$push : { uploads : { $each : [data], $position : 0} }})
@@ -60,17 +61,17 @@ router.post('/data', async (req, res)=>{
         
         }
         catch(e){
-            console.log(e)
 
             res.status(500).json({message : "Something went wrong"}).end()
         }
 
 })
 
-router.get('/get-file', (req, res)=>{
+//* download the file
+router.get('/get-file/:fileName', (req, res)=>{
     const dirName = path.dirname(__dirname);
-    const reqPath = path.join(dirName, '\\uploads')
-    console.log(nanoid())
+    const reqPath = path.join(dirName, '\\uploads', req.params.fileName)
+    res.sendFile(reqPath).end()
 })
 
 

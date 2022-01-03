@@ -18,7 +18,7 @@ function App() {
 console.log(appConfig)
 
   useEffect(() => {
-    fetch(`${appConfig.baseUrl}/get-user`, { credentials: 'include'})
+    fetch(`${appConfig.baseUrl}/get-user`, { credentials: 'omit'})
       .then((response) => response.json())
       .then((user) => {
         setuser(user);

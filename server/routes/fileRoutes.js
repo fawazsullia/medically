@@ -37,7 +37,8 @@ router.post('/data', async (req, res)=>{
         patientId : patientId,
         uploads :  [{
             uploadTitle : uploadTitle,
-            uploadFileName : uploadFileName
+            uploadFileName : uploadFileName,
+            uploadDate : new Date()
         }]
 
     }
@@ -46,7 +47,7 @@ router.post('/data', async (req, res)=>{
         const patient = await Uploads.find({patientId : patientId})
         if(patient.length){
             //add to the uploads array
-            await Uploads.findOneAndUpdate({patientId : patientId}, {$push : { uploads : { $each : [data], $position : 0} }})
+            await Uploads.findOneAndUpdate({patientId : patientId}, {$push : { uploads :  data.uploads[0] }})
             res.status(200).json({message : "Posted successfully"}).end()
         }
         else {

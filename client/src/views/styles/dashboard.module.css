@@ -40,12 +40,28 @@
   margin-left: 20px;
 }
 
+.searchDiv button:hover {
+  cursor: pointer;
+}
+
 .patientDetailsDiv {
   margin-left: 20px;
 }
 
 .patientDetailsDiv span {
   margin-right: 30px;
+}
+
+.showUploads {
+  background-color: #37a892;
+  border: none;
+  outline: none;
+  color: white;
+  padding: 9px 20px;
+}
+
+.showUploads:hover {
+  cursor: pointer;
 }
 
 .patientRecordDiv {

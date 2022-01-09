@@ -1,0 +1,78 @@
+.container {
+  background-color: #37a892;
+  width: 80%;
+  height: 75vh;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 10px 40px;
+  box-sizing: border-box;
+  position: absolute;
+  overflow-x: hidden;
+  z-index: 99;
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+}
+
+.head p {
+  font-size: 1.8rem;
+}
+
+.head p:hover {
+  cursor: pointer;
+}
+
+.uploadDiv {
+  display: flex;
+  gap: 35px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.card {
+  box-sizing: border-box;
+  padding: 10px;
+  background-color: aliceblue;
+  width: 250px;
+  position: relative;
+  border-radius: 10px;
+}
+
+.card:hover {
+  cursor: pointer;
+}
+
+.card:hover > h5 {
+  color: aliceblue;
+}
+
+.card:hover > p {
+  color: aliceblue;
+}
+
+.card:hover > .download {
+  display: block;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+}
+
+.download {
+  position: absolute;
+  display: none;
+}
+
+.card h5,
+p {
+  margin: 0;
+}
+
+.card p {
+  font-size: 0.7rem;
+}

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import LoadingSpinner from "./components/LoadingSpinner";
 import appConfig from "./appConfig";
+import Uploads from "./components/Uploads";
 
 const Nav = React.lazy(() => import('./components/Nav'));
 const Home = React.lazy(() => import('./views/Home'));
@@ -15,7 +16,6 @@ function App() {
   const [user, setuser] = useState({ signedIn: false, drName: "", uprn: "" });
   const [loading, setloading] = useState(true);
 
-console.log(appConfig)
 
   useEffect(() => {
     fetch(`${appConfig.baseUrl}/get-user`, { credentials: 'omit'})
@@ -73,6 +73,11 @@ console.log(appConfig)
           <Route path='/register-patient'>
             <RegisterPatient user={user} />
           </Route>
+
+          <Route path='/test'>
+            <Uploads />
+          </Route>
+
         </Switch>
       </div>
     );

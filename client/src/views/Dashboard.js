@@ -4,6 +4,7 @@ import Record from "../components/Record";
 import * as dashboardStyle from "./styles/dashboard.module.css";
 import appConfig from "../appConfig";
 import { nanoid } from "nanoid";
+import Uploads from "../components/Uploads";
 
 function Dashboard({ user }) {
   const [records, setrecords] = useState([]);
@@ -12,6 +13,7 @@ function Dashboard({ user }) {
   const [loading, setloading] = useState(false);
   const [file, setfile] = useState();
   const [uploadTitle, setuploadTitle] = useState("");
+  const [uploadsVisible, setuploadsVisible] = useState(false)
 
 
   //* search patient based on an id to retrieve the records
@@ -92,7 +94,6 @@ function Dashboard({ user }) {
     }
   };
 
-  console.log(file.size)
   //* upload file in chunks and also send data about the upload to save in database
   const handleFileUpload = () => {
     if(patientId && uploadTitle){
@@ -151,8 +152,21 @@ function Dashboard({ user }) {
   }
   };
 
+  //open the uploads tab with this
+  const openUploads = ()=>{
+    setuploadsVisible(true)
+  }
+
+  const handleCloseUploads = ()=>{
+setuploadsVisible(false)
+  }
+
   return (
+
+    uploadsVisible ? <Uploads handleCloseUploads={handleCloseUploads}/> :
+
     <div className={dashboardStyle.container}>
+      
       <div className={dashboardStyle.left}>
         <div className={dashboardStyle.searchDiv}>
           <input
@@ -184,6 +198,7 @@ function Dashboard({ user }) {
               {patientDetails.bloodGroup}
             </span>
           </span>
+          <button className={dashboardStyle.showUploads} onClick={openUploads}>Uploads</button>
         </div>
         <div className={dashboardStyle.patientRecordDiv}>
           {!records.length && (

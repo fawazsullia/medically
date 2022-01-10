@@ -68,11 +68,37 @@ router.post('/data', async (req, res)=>{
 
 })
 
+//* get the uploads of a particular patient
+router.get('/get-uploads/:patientId', async (req,res)=>{
+    const {patientId} = req.params;
+    try{
+    const checkIfUploads = await Uploads.findOne({patientId : patientId});
+    if(checkIfUploads){
+        //give back the uploads back
+        const data = await Uploads.findOne({patientId : patientId})
+        res.status(200).json(data).end()
+    }
+    else {
+        //return 404 error
+        res.status(404).json({message: "No uploads found"})
+    }
+}
+catch(e){
+    res.status(500).json({message : "Something went wrong"}).end()
+}
+})
+
 //* download the file
 router.get('/get-file/:fileName', (req, res)=>{
     const dirName = path.dirname(__dirname);
     const reqPath = path.join(dirName, '\\uploads', req.params.fileName)
-    res.sendFile(reqPath).end()
+    fs.access(reqPath, fs.F_OK, (err) => {
+        if (err) {
+          res.status(400).json({message : "No such file found"}).end()
+        }
+        res.sendFile(reqPath).end()
+
+      })
 })
 
 

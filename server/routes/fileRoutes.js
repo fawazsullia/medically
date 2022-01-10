@@ -89,16 +89,11 @@ catch(e){
 })
 
 //* download the file
-router.get('/get-file/:fileName', (req, res)=>{
+router.get('/get-file/:fileName',  (req, res)=>{
     const dirName = path.dirname(__dirname);
-    const reqPath = path.join(dirName, '\\uploads', req.params.fileName)
-    fs.access(reqPath, fs.F_OK, (err) => {
-        if (err) {
-          res.status(400).json({message : "No such file found"}).end()
-        }
-        res.sendFile(reqPath).end()
-
-      })
+    const reqPath = path.join(dirName, '\\uploads', `\\${req.params.fileName}`)
+    //check if file exists. Not a priority for now
+   res.download(reqPath)
 })
 
 

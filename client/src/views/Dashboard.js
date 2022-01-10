@@ -154,7 +154,9 @@ function Dashboard({ user }) {
 
   //open the uploads tab with this
   const openUploads = ()=>{
-    setuploadsVisible(true)
+    if(patientId.length){    setuploadsVisible(true)
+    }
+    else { alert("Please search for a patient")}
   }
 
   const handleCloseUploads = ()=>{
@@ -163,7 +165,7 @@ setuploadsVisible(false)
 
   return (
 
-    uploadsVisible ? <Uploads handleCloseUploads={handleCloseUploads}/> :
+    uploadsVisible ? <Uploads handleCloseUploads={handleCloseUploads} patientId={patientId}/> :
 
     <div className={dashboardStyle.container}>
       

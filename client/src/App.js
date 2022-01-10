@@ -29,7 +29,7 @@ function App() {
 
   const logout = () => {
 
-    fetch(`${appConfig.baseUrl}/auth/logout`, { credentials: appConfig.credentials })
+    fetch(`${appConfig.baseUrl}/auth/logout`, { credentials: 'include' })
     .then((response) =>  {setuser({ signedIn: false, drName: "", uprn: "" } ); })
     .catch((err) => { alert("Error Signing out")})
   }

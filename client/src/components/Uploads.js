@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as uploadStyle from "./styles/uploads.module.css";
 import appConfig from "../appConfig";
+import {nanoid} from 'nanoid'
 
 function Uploads({ handleCloseUploads, patientId }) {
   const [uploadDetails, setuploadDetails] = useState([]);
@@ -26,9 +27,10 @@ function Uploads({ handleCloseUploads, patientId }) {
 
   //download the file when clicked on placeholder
   const handleDownloads = (e) => {
-    let fileName =
+    const randomName = nanoid(8)
+    let downloadUrl =
       e.target.nodeName === "DIV" ? e.target.id : e.target.parentNode.id;
-    fetch(`http://localhost:5000/file/get-file/${fileName}`)
+    fetch(downloadUrl)
       .then((res) => res.blob())
       .then((response) => {
         console.log(response);
@@ -36,7 +38,7 @@ function Uploads({ handleCloseUploads, patientId }) {
         let anchor = document.createElement("a");
         anchor.href = url;
         //figure out a way to make the download file name the title of the file
-        anchor.download = `${fileName}`;
+        anchor.download = `${randomName}`;
         anchor.click();
       })
       .catch((e) => console.log(e));
@@ -59,8 +61,8 @@ function Uploads({ handleCloseUploads, patientId }) {
               <div
                 onClick={handleDownloads}
                 className={uploadStyle.card}
-                id={data.uploadFileName}
-                key={data.uploadFileName}
+                id={data.downloadUrl}
+                key={data.downloadUrl}
               >
                 <h5>{data.uploadTitle}</h5>
                 <p>{data.uploadDate}</p>

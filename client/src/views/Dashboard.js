@@ -95,41 +95,28 @@ function Dashboard({ user }) {
   };
 
   //* upload file in chunks and also send data about the upload to save in database
-  const handleFileUpload = () => {
+  const handleFileUpload = async () => {
     if(patientId && uploadTitle){
       
       if(file.size > 52428800000){ alert("File size too large. 5mb max")}
       else {
-    let reqFileName = nanoid(6) + file.name;
-    const fileReader = new FileReader();
-
-    fileReader.onload = async (e) => {
-      const chunkSize = 5000;
-      const numberOfChunks = e.target.result.byteLength / chunkSize;
-
-      let response;
-      for (let chunk = 0; chunk < numberOfChunks + 1; chunk++) {
-        response = await fetch(
-          `${appConfig.baseUrl}/file/upload/${reqFileName}`,
+      const fileName = file.name 
+      const formData = new FormData()
+      formData.append(fileName, file)       
+      let response = await fetch(
+          `${appConfig.baseUrl}/file/upload/${fileName}`,
           {
             method: "post",
-            headers: {
-              "content-type": "application/octet-stream",
-              "content-length": chunkSize,
-            },
-            body: e.target.result.slice(
-              chunk * chunkSize,
-              chunk * chunkSize + chunkSize
-            ),
+            body: formData
           }
         );
-      }
+      
       const res = await response.json();
 
       //send the file name and title to store in database
       const toSend = {
         patientId: patientId,
-        uploadFileName: res.uploadFileName,
+        downloadUrl : res.downloadUrl,
         uploadTitle: uploadTitle,
       };
 
@@ -143,8 +130,7 @@ function Dashboard({ user }) {
 
       const finalRes = data.json();
       console.log(finalRes);
-    };
-    fileReader.readAsArrayBuffer(file);
+    ;
   }
   }
   else {

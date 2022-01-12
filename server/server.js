@@ -8,6 +8,8 @@ require("dotenv").config();
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
 const serverConfig = require('./serverConfig')
+const fileupload = require('express-fileupload')
+
 
 
 //different configuration based on environments
@@ -59,6 +61,8 @@ app.use(cors())
 
 
 app.use(express.json());
+app.use(
+  fileupload())
 
 
 //router to check if session exists

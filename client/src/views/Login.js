@@ -28,7 +28,7 @@ mode: 'cors',
 headers: {
   'Content-Type' : 'application/json'
 },
-credentials: 'include',
+credentials: 'omit',
 body : JSON.stringify(data)
 
 })

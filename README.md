@@ -29,3 +29,5 @@ Site live at : https://medically.netlify.app/dashboard
 ### Deployment
 - Backend on heroku
 - Frontend on netlify
+
+## Note: currently, the app does not support file uploads due to limitations of the server (heroku). I'm aactively working on moving the server to aws

@@ -14,28 +14,28 @@ cloudinary.config({
   secure: true,
 });
 
-//* upload file route
-router.post("/upload/:fileName", async (req, res) => {
-  const { fileName } = req.params;
-  const file = req.files[fileName];
+//* upload file route: dont need this anymore since I use cloudinary
+// router.post("/upload/:fileName", async (req, res) => {
+//   const { fileName } = req.params;
+//   const file = req.files[fileName];
 
-  let pa = path.join(__dirname, "..\\", "uploads\\", fileName);
-  file.mv(pa, (err) => {
-    if (err) {
-      res.status(500).json({ message: "Something went wrong" }).end();
-    } else {
-      cloudinary.uploader.upload(`${pa}`, function (error, result) {
-        if (error) {
-          res.status(500).json({ message: "something went wrong" }).end();
-        } else {
-          res.status(200).json({ downloadUrl: result.secure_url }).end();
-        }
-      });
-    }
-  });
-});
+//   let pa = path.join(__dirname, "..\\", "uploads\\", fileName);
+//   file.mv(pa, (err) => {
+//     if (err) {
+//       res.status(500).json({ message: "Something went wrong" }).end();
+//     } else {
+//       cloudinary.uploader.upload(`${pa}`, function (error, result) {
+//         if (error) {
+//           res.status(500).json({ message: "something went wrong" }).end();
+//         } else {
+//           res.status(200).json({ downloadUrl: result.secure_url }).end();
+//         }
+//       });
+//     }
+//   });
+// });
 
-//* data associated with the upload
+//* data associated with the upload : need to save data regarding uploads in the database
 
 router.post("/data", async (req, res) => {
   const { patientId, downloadUrl, uploadTitle } = req.body;

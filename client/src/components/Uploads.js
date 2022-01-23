@@ -18,7 +18,7 @@ function Uploads({ handleCloseUploads, patientId }) {
         }
       })
       .catch((e) => console.log(e));
-  }, []);
+  }, [patientId]);
 
   //handle closing the popup
   const closeUploads = () => {

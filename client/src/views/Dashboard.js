@@ -3,7 +3,6 @@ import AddRecord from "../components/AddRecord";
 import Record from "../components/Record";
 import * as dashboardStyle from "./styles/dashboard.module.css";
 import appConfig from "../appConfig";
-import { nanoid } from "nanoid";
 import Uploads from "../components/Uploads";
 
 function Dashboard({ user }) {
@@ -21,6 +20,7 @@ function Dashboard({ user }) {
     if (patientId) {
       setloading(true);
       //use this to get all the details related to patient from the server using id provided
+    
       fetch(`${appConfig.baseUrl}/patient/search-patient`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -100,11 +100,11 @@ function Dashboard({ user }) {
       
       if(file.size > 52428800000){ alert("File size too large. 5mb max")}
       else {
-      const fileName = file.name 
       const formData = new FormData()
-      formData.append(fileName, file)       
+      formData.append('file', file)      
+      formData.append('upload_preset', "e5ynfkku") 
       let response = await fetch(
-          `${appConfig.baseUrl}/file/upload/${fileName}`,
+          `https://api.cloudinary.com/v1_1/indiagoesremote/image/upload`,
           {
             method: "post",
             body: formData
@@ -116,7 +116,7 @@ function Dashboard({ user }) {
       //send the file name and title to store in database
       const toSend = {
         patientId: patientId,
-        downloadUrl : res.downloadUrl,
+        downloadUrl : res.secure_url,
         uploadTitle: uploadTitle,
       };
 

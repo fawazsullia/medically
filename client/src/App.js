@@ -18,7 +18,7 @@ function App() {
 
 
   useEffect(() => {
-    fetch(`${appConfig.baseUrl}/get-user`, { credentials: 'omit'})
+    fetch(`${appConfig.baseUrl}/get-user`, { credentials: 'include'})
       .then((response) => response.json())
       .then((user) => {
         setuser(user);
@@ -29,7 +29,7 @@ function App() {
 
   const logout = () => {
 
-    fetch(`${appConfig.baseUrl}/auth/logout`, { credentials: 'omit' })
+    fetch(`${appConfig.baseUrl}/auth/logout`, { credentials: 'include' })
     .then((response) =>  {setuser({ signedIn: false, drName: "", uprn: "" } ); })
     .catch((err) => { alert("Error Signing out")})
   }

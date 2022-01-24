@@ -4,6 +4,8 @@ import Record from "../components/Record";
 import * as dashboardStyle from "./styles/dashboard.module.css";
 import appConfig from "../appConfig";
 import Uploads from "../components/Uploads";
+import formatDate from "../helpers/formatDate";
+import useFetch from "../helpers/useFetch";
 
 function Dashboard({ user }) {
   const [records, setrecords] = useState([]);
@@ -15,43 +17,40 @@ function Dashboard({ user }) {
   const [uploadsVisible, setuploadsVisible] = useState(false);
   const [uploading, setuploading] = useState(false);
 
+
   //* search patient based on an id to retrieve the records
-  const searchPatient = () => {
+  const searchPatient = async () => {
     if (patientId) {
       setloading(true);
       //use this to get all the details related to patient from the server using id provided
-
-      fetch(`${appConfig.baseUrl}/patient/search-patient`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        mode: "cors",
-        body: JSON.stringify({ patientId: patientId }),
-      })
-        .then((res) => res.json())
-        .then((response) => {
-          setloading(false);
+      try{
+        const res = await fetch(`${appConfig.baseUrl}/patient/search-patient`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          mode: "cors",
+          body: JSON.stringify({ patientId: patientId }),
+        })
+        const response = await res.json()
+        setloading(false);
           if (response.status) {
             setpatientDetails(response.patient);
             setrecords(response.patient.records);
           } else {
             alert(response.message);
           }
-        })
-        .catch((err) => {
-          console.log(err);
-          setloading(false);
-        });
+      }catch(err){
+        setloading(false);
+
+      }
     } else {
       alert("An id is required");
     }
   };
 
   //* handle creating a new record here
-  const createRecord = (brief, description) => {
-    let date = new Date();
-    let reqDate =
-      date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
-    reqDate = reqDate.toString();
+  const createRecord = async (brief, description) => {
+    
+    const reqDate = formatDate();
 
     const data = {
       drName: user.drName,
@@ -75,19 +74,19 @@ function Dashboard({ user }) {
         ...records,
       ]);
 
-      fetch(`${appConfig.baseUrl}/patient/create-record`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        mode: "cors",
-        body: JSON.stringify(data),
-      })
-        .then((res) => res.json())
-        .then((response) => {
-          setloading(false);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+try{
+  const res = await fetch(`${appConfig.baseUrl}/patient/create-record`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    mode: "cors",
+    body: JSON.stringify(data),
+  })
+  const response = await res.json()
+  setloading(false);
+}catch(err){
+  setloading(false);
+
+}
     } else {
       alert("Search for a patient to create record");
       setloading(false);
@@ -149,6 +148,8 @@ function Dashboard({ user }) {
       alert("Please search for a patient");
     }
   };
+
+  //close uploads widget
 
   const handleCloseUploads = () => {
     setuploadsVisible(false);

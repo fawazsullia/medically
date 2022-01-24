@@ -12,15 +12,15 @@ function Dashboard({ user }) {
   const [loading, setloading] = useState(false);
   const [file, setfile] = useState();
   const [uploadTitle, setuploadTitle] = useState("");
-  const [uploadsVisible, setuploadsVisible] = useState(false)
-
+  const [uploadsVisible, setuploadsVisible] = useState(false);
+  const [uploading, setuploading] = useState(false);
 
   //* search patient based on an id to retrieve the records
   const searchPatient = () => {
     if (patientId) {
       setloading(true);
       //use this to get all the details related to patient from the server using id provided
-    
+
       fetch(`${appConfig.baseUrl}/patient/search-patient`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -96,65 +96,68 @@ function Dashboard({ user }) {
 
   //* upload file in chunks and also send data about the upload to save in database
   const handleFileUpload = async () => {
-    if(patientId && uploadTitle){
-      
-      if(file.size > 52428800000){ alert("File size too large. 5mb max")}
-      else {
-      const formData = new FormData()
-      formData.append('file', file)      
-      formData.append('upload_preset', "e5ynfkku") 
-      let response = await fetch(
-          `https://api.cloudinary.com/v1_1/indiagoesremote/image/upload`,
-          {
+    if (patientId && uploadTitle) {
+      if (file.size > 52428800000) {
+        alert("File size too large. 5mb max");
+      } else {
+        setuploading(true);
+        try {
+          const formData = new FormData();
+          formData.append("file", file);
+          formData.append("upload_preset", "e5ynfkku");
+          let response = await fetch(
+            `https://api.cloudinary.com/v1_1/indiagoesremote/image/upload`,
+            {
+              method: "post",
+              body: formData,
+            }
+          );
+
+          const res = await response.json();
+
+          //send the file name and title to store in database
+          const toSend = {
+            patientId: patientId,
+            downloadUrl: res.secure_url,
+            uploadTitle: uploadTitle,
+          };
+
+          await fetch(`${appConfig.baseUrl}/file/data`, {
             method: "post",
-            body: formData
-          }
-        );
-      
-      const res = await response.json();
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify(toSend),
+          });
 
-      //send the file name and title to store in database
-      const toSend = {
-        patientId: patientId,
-        downloadUrl : res.secure_url,
-        uploadTitle: uploadTitle,
-      };
-
-      const data = await fetch(`${appConfig.baseUrl}/file/data`, {
-        method: "post",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify(toSend),
-      });
-
-      const finalRes = data.json();
-      console.log(finalRes);
-    ;
-  }
-  }
-  else {
-    alert(" A patient id and title is required to upload a file")
-  }
+          setuploading(false);
+          setuploadTitle("");
+        } catch (err) {
+          setuploading(false);
+        }
+      }
+    } else {
+      alert(" A patient id and title is required to upload a file");
+    }
   };
 
   //open the uploads tab with this
-  const openUploads = ()=>{
-    if(patientId.length){    setuploadsVisible(true)
+  const openUploads = () => {
+    if (patientId.length) {
+      setuploadsVisible(true);
+    } else {
+      alert("Please search for a patient");
     }
-    else { alert("Please search for a patient")}
-  }
+  };
 
-  const handleCloseUploads = ()=>{
-setuploadsVisible(false)
-  }
+  const handleCloseUploads = () => {
+    setuploadsVisible(false);
+  };
 
-  return (
-
-    uploadsVisible ? <Uploads handleCloseUploads={handleCloseUploads} patientId={patientId}/> :
-
+  return uploadsVisible ? (
+    <Uploads handleCloseUploads={handleCloseUploads} patientId={patientId} />
+  ) : (
     <div className={dashboardStyle.container}>
-      
       <div className={dashboardStyle.left}>
         <div className={dashboardStyle.searchDiv}>
           <input
@@ -186,7 +189,9 @@ setuploadsVisible(false)
               {patientDetails.bloodGroup}
             </span>
           </span>
-          <button className={dashboardStyle.showUploads} onClick={openUploads}>Uploads</button>
+          <button className={dashboardStyle.showUploads} onClick={openUploads}>
+            Uploads
+          </button>
         </div>
         <div className={dashboardStyle.patientRecordDiv}>
           {!records.length && (
@@ -205,8 +210,15 @@ setuploadsVisible(false)
 
       <div className={dashboardStyle.right}>
         <div className={dashboardStyle.uploadTitleDiv}>
-        <h4>Upload File:</h4>
-        <input placeholder="What's the upload about?" type="text" value={uploadTitle} onChange={(e)=>{setuploadTitle(e.target.value)}}></input>
+          <h4>Upload File:</h4>
+          <input
+            placeholder="What's the upload about?"
+            type="text"
+            value={uploadTitle}
+            onChange={(e) => {
+              setuploadTitle(e.target.value);
+            }}
+          ></input>
         </div>
 
         <div className={dashboardStyle.uploadDiv}>
@@ -216,7 +228,7 @@ setuploadsVisible(false)
             onChange={(e) => setfile(e.target.files[0])}
           />
           <button className={dashboardStyle.upload} onClick={handleFileUpload}>
-            Upload File
+            {uploading ? "Uploading..." : "Upload File"}
           </button>
         </div>
 

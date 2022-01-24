@@ -4,14 +4,13 @@ import * as loginStyle from "./styles/login.module.css";
 import { validateLogin } from "../helpers/validateLogin";
 import appConfig from "../appConfig";
 
-function Login({loginUser, user}) {
+function Login({ loginUser}) {
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
   const [message, setmessage] = useState("");
-  const [loading, setloading] = useState(false)
+  const [loading, setloading] = useState(false);
 
-  const handleLogin = (event) => {
-    
+  const handleLogin = async () => {
     const data = {
       drEmail: email,
       password: password,
@@ -19,40 +18,34 @@ function Login({loginUser, user}) {
 
     const isValid = validateLogin(data);
     setmessage(isValid.message);
-//fetch post to server to validate credentials
-if(isValid.status){
-  setloading(true)
-fetch(`${appConfig.baseUrl}/auth/login`, {
-method: 'POST',
-mode: 'cors',
-headers: {
-  'Content-Type' : 'application/json'
-},
-credentials: 'omit',
-body : JSON.stringify(data)
+    //fetch post to server to validate credentials
+    if (isValid.status) {
+      setloading(true);
 
-})
-.then((res)=> res.json())
-.then((response)=>{
-  setloading(false)
-  if(response.status){
-    loginUser(response.userDetails)
-
-  }
-  else{  setmessage(response.message)    }
-
-
-})
-.catch((error)=>{setloading(false); setmessage("Something went wrong!"); console.log(error)})
-
-}
-else{
-  setmessage(isValid.message)
-}
-//if valid user, redirect to dash
-//if no account, redirect to signup
-//if valid user but wrong password, error
-
+      try {
+        const res = await fetch(`${appConfig.baseUrl}/auth/login`, {
+          method: "POST",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "omit",
+          body: JSON.stringify(data),
+        });
+        const response = await res.json();
+        setloading(false);
+        if (response.status) {
+          loginUser(response.userDetails);
+        } else {
+          setmessage(response.message);
+        }
+      } catch (err) {
+        setloading(false);
+        setmessage("Something went wrong!");
+      }
+    } else {
+      setmessage(isValid.message);
+    }
   };
 
   return (
@@ -68,8 +61,9 @@ else{
       <div className={loginStyle.right}>
         <form>
           <input
-            type='email'
-            placeholder='Email'
+            type="email"
+            placeholder="Email"
+            data-testid="email"
             onChange={(e) => {
               setemail(e.target.value);
             }}
@@ -77,26 +71,25 @@ else{
           />{" "}
           <br />
           <input
-            type='password'
-            placeholder='Password'
+            type="password"
+            placeholder="Password"
+            data-testid="password"
             onChange={(e) => {
               setpassword(e.target.value);
             }}
             value={password}
           />{" "}
-          { loading ? (<button type='button' onClick={handleLogin}>
-            Loading
-          </button>) : (<button type='button' onClick={handleLogin}>
-            Login
-          </button>) }
-            
+          <button type="button" data-testid="button" onClick={handleLogin}>
+            {loading ? "Logging in...." : "Login"}
+          </button>
           <span
             style={{ color: "red", fontSize: "0.7rem", marginLeft: "20px" }}
+            data-testid="errormessage"
           >
             {message}
           </span>
           <p>
-            New here? <Link to='/register'>Register</Link>
+            New here? <Link to="/register">Register</Link>
           </p>
         </form>
       </div>

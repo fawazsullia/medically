@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import * as loginStyle from "./styles/login.module.css";
 import { validateLogin } from "../helpers/validateLogin";
 import appConfig from "../appConfig";
+import Toast from "../components/Toast";
 
 function Login({ loginUser}) {
   const [email, setemail] = useState("");
@@ -10,6 +11,7 @@ function Login({ loginUser}) {
   const [message, setmessage] = useState("");
   const [loading, setloading] = useState(false);
 
+console.log(message)
   const handleLogin = async () => {
     const data = {
       drEmail: email,
@@ -42,10 +44,13 @@ function Login({ loginUser}) {
       } catch (err) {
         setloading(false);
         setmessage("Something went wrong!");
+
       }
     } else {
       setmessage(isValid.message);
+
     }
+    
   };
 
   return (
@@ -86,12 +91,12 @@ function Login({ loginUser}) {
             style={{ color: "red", fontSize: "0.7rem", marginLeft: "20px" }}
             data-testid="errormessage"
           >
-            {message}
           </span>
           <p>
             New here? <Link to="/register">Register</Link>
           </p>
         </form>
+       { message !== ""  && message !== null && <Toast message={message} type={"warning"} /> }
       </div>
     </div>
   );

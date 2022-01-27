@@ -1,0 +1,43 @@
+.container {
+  visibility: hidden;
+}
+
+.visible {
+  visibility: visible;
+  height: 50px;
+  width: 25vw;
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  z-index: 1;
+  animation: fadein 0.5s, fadeout 0.5s 2s;
+  color: white;
+  text-align: center;
+  margin: auto;
+  box-sizing: border-box;
+  font-size: 0.8rem;
+  padding-top: 15px;
+}
+
+@keyframes fadein {
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+  to {
+    bottom: 50px;
+    opacity: 1;
+  }
+}
+
+@keyframes fadeout {
+  from {
+    bottom: 50;
+    opacity: 1;
+  }
+  to {
+    bottom: 0px;
+    opacity: 0;
+  }
+}

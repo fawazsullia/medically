@@ -4,6 +4,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import LoadingSpinner from "./components/LoadingSpinner";
 import appConfig from "./appConfig";
 import Uploads from "./components/Uploads";
+import Toast from "./components/Toast";
 
 const Nav = React.lazy(() => import('./components/Nav'));
 const Home = React.lazy(() => import('./views/Home'));
@@ -18,7 +19,7 @@ function App() {
 
 
   useEffect(() => {
-    fetch(`${appConfig.baseUrl}/get-user`, { credentials: 'include'})
+    fetch(`${appConfig.baseUrl}/get-user`, { credentials: 'omit'})
       .then((response) => response.json())
       .then((user) => {
         setuser(user);
@@ -29,7 +30,7 @@ function App() {
 
   const logout = () => {
 
-    fetch(`${appConfig.baseUrl}/auth/logout`, { credentials: 'include' })
+    fetch(`${appConfig.baseUrl}/auth/logout`, { credentials: 'omit' })
     .then((response) =>  {setuser({ signedIn: false, drName: "", uprn: "" } ); })
     .catch((err) => { alert("Error Signing out")})
   }
@@ -75,7 +76,7 @@ function App() {
           </Route>
 
           <Route path='/test'>
-            <Uploads />
+            <Toast />
           </Route>
 
         </Switch>
